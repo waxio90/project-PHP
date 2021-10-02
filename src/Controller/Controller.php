@@ -8,42 +8,39 @@ use App\View;
 use App\Database;
 use App\Request;
 use App\Exception\ConfigurationException;
-use App\Exception\NotFoundException;
 
 require_once("src/Utils/debug.php");
 
-
 class Controller
 {
-    protected const DEFAULT_ACTION = 'list';
-    protected const MAX_FILE_SIZE = 1024*1024*3;
-    protected const SUPPORTED_TYPES = "application/pdf";
+    private const DEFAULT_ACTION = 'list';
+    private const MAX_FILE_SIZE = 1024*1024*3;
+    private const SUPPORTED_TYPES = "application/pdf";
 
     
     private static array $configuration = [];
     
-    protected View $view;
-    protected Request $request;
-    protected Database $database;
-    
-    public static function initConfiguration(array $configuration): void
-    {
-        self::$configuration = $configuration;
-    }
+    private View $view;
+    private Request $request;
+    private Database $database;
     
     public function __construct(Request $request)
     {
         if (empty(self::$configuration['db'])) {
             throw new ConfigurationException('Configuration error');
         }
+
         $this->database = new Database(self::$configuration['db']);
-        
         $this->request = $request;
         $this->view = new View();
-        
-        session_start();
+
     }
-    
+
+    public static function initConfiguration(array $configuration): void
+    {
+        self::$configuration = $configuration;
+    }
+
     public function run(): void
     {
         $action = $this->action() . 'Action';
@@ -57,9 +54,7 @@ class Controller
     {
         if ($this->isSession()) {
            $listAd = $this->database->listUserAd($_SESSION['id']);
-           
         }
-        
         
         $this->view->render('listUserAd', [
             'listAd' => $listAd,
@@ -139,38 +134,36 @@ class Controller
     public function editAdAction(): void
     {
         if ($this->isSession()) {
-            
-        
-        if ($this->request->hasPost()) {
-            $idAd = (int) $this->request->postParam('id');
-            $adData = [
-                'company' => $this->request->postParam('company'),
-                'locationCompany' => $this->request->postParam('locationCompany'),
-                'descriptionCompany' => $this->request->postParam('descriptionCompany'),
-                'title' => $this->request->postParam('title'),
-                'position' => $this->request->postParam('position'),
-                'level' => $this->request->postParam('level'),
-                'contract' => $this->request->postParam('contract'),
-                'locationJob' => $this->request->postParam('locationJob'),
-                'salaryFrom' => $this->request->postParam('salaryFrom'),
-                'salaryTo' => $this->request->postParam('salaryTo'),
-                'salary' => $this->request->postParam('salary'),
-                'currency' => $this->request->postParam('currency'),
-                'descriptionNeeds' => $this->request->postParam('descriptionNeeds')
-            ];
-            
-            if (empty($adData['company']) || empty($adData['locationCompany']) || empty($adData['title']) || empty($adData['position'])
-                || empty($adData['descriptionNeeds'])) {
-                    $this->redirect('/?action=edit', ['error' => 'emptyData']);
-                }
+            if ($this->request->hasPost()) {
+                $idAd = (int) $this->request->postParam('id');
+                $adData = [
+                    'company' => $this->request->postParam('company'),
+                    'locationCompany' => $this->request->postParam('locationCompany'),
+                    'descriptionCompany' => $this->request->postParam('descriptionCompany'),
+                    'title' => $this->request->postParam('title'),
+                    'position' => $this->request->postParam('position'),
+                    'level' => $this->request->postParam('level'),
+                    'contract' => $this->request->postParam('contract'),
+                    'locationJob' => $this->request->postParam('locationJob'),
+                    'salaryFrom' => $this->request->postParam('salaryFrom'),
+                    'salaryTo' => $this->request->postParam('salaryTo'),
+                    'salary' => $this->request->postParam('salary'),
+                    'currency' => $this->request->postParam('currency'),
+                    'descriptionNeeds' => $this->request->postParam('descriptionNeeds')
+                ];
                 
-                if (!preg_match('/^[a-zA-Zęóąśłżźń]|[a-zA-Zęóąśłżźń]+\s[a-zA-Zęóąśłżźń]{4,30}$/', $adData['locationCompany'])) {
-                    $this->redirect('/?action=edit', ['error' => 'locationCompany']);
-                }
-                
-                $this->database->editAd($adData, (int) $idAd, (int) $_SESSION['id']);
-                $this->redirect('/?action=listUserAd', ['before' => 'update']);
-        }
+                if (empty($adData['company']) || empty($adData['locationCompany']) || empty($adData['title']) || empty($adData['position'])
+                    || empty($adData['descriptionNeeds'])) {
+                        $this->redirect('/?action=edit', ['error' => 'emptyData']);
+                    }
+                    
+                    if (!preg_match('/^[a-zA-Zęóąśłżźń]|[a-zA-Zęóąśłżźń]+\s[a-zA-Zęóąśłżźń]{4,30}$/', $adData['locationCompany'])) {
+                        $this->redirect('/?action=edit', ['error' => 'locationCompany']);
+                    }
+                    
+                    $this->database->editAd($adData, (int) $idAd, (int) $_SESSION['id']);
+                    $this->redirect('/?action=listUserAd', ['before' => 'update']);
+            }
         }
         
         $this->view->render('editAd', ['ad' => $this->getAdUser()]);
@@ -179,7 +172,6 @@ class Controller
     public function deleteAdAction(): void
     {
         if ($this->isSession()) {
-            
             if ($this->request->hasPost()) {
                 $id = $this->request->postParam('id');
                 $this->database->deleteAd((int) $id, (int) $_SESSION['id']);
@@ -187,32 +179,27 @@ class Controller
             }
         }
         
-        
         $this->view->render('deleteAd', ['ad' => $this->getAdUser()]);
     }
     
     public function deleteAppAction(): void
     {
         if ($this->isSession()) {
-            
-
             if ($this->request->hasPost()) {
                 $this->database->deleteApp((int) $this->request->postParam('id'));
                 $this->redirect('/?action=listUserApp', ['before' => 'delete']);
             } 
         }
         
-        
         $this->view->render('deleteApp', ['app' => $this->getAppUser()]);
     }
-    
+
     public function loginAction(): void
     {
         if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             header("location: /?action=listUserAd");
             exit;
         }
-        
         if ($this->request->hasPost()) {
             $loginData = [
                 'login' => $this->request->postParam('login'),
@@ -231,7 +218,7 @@ class Controller
             if (!password_verify($loginData['password'], $userData['password'])) {
                 $this->redirect('/?action=login', ['error' => 'wrongPassword']);
             }
-    
+
             $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $userData['id'];
             $_SESSION["username"] = $userData['login'];
@@ -244,12 +231,11 @@ class Controller
                 'error' => $this->request->getParam('error'),
                 'before' => $this->request->getParam('before')
             ]);
-        
     }
     
     public function logoutAction(): void
     {
-        session_destroy();
+        $this->stopSession();
         header("location: /");
         exit;
     }
@@ -296,8 +282,6 @@ class Controller
         if (empty($_SESSION)) {
             $this->redirect('/?action=login', ['error' => 'loggedin']);
         }
-        
-        
         
         if ($this->request->hasPost()) {
             $adData = [
@@ -405,7 +389,6 @@ class Controller
         if ($phrase) {
             $adOffersList = $this->database->search($phrase);
         } else {
-        
             $adOffersList = $this->database->getAdOffers();
         }
         $this->view->render('list', 
@@ -415,7 +398,7 @@ class Controller
             ]);
     }
     
-    final protected function redirect(string $to, array $params): void
+    private function redirect(string $to, array $params): void
     {
         $location = $to;
         if (count($params)) {
@@ -430,8 +413,23 @@ class Controller
         header("Location: $location");
         exit;
     }
-    
-    final private function isSession(): bool
+
+    private function action(): string
+    {
+        return $this->request->getParam('action', self::DEFAULT_ACTION);
+    }
+
+    private function startSession(): void
+    {
+        session_start();
+    }
+
+    private function stopSession(): void
+    {
+        session_destroy();
+    }
+
+    private function isSession(): bool
     {
         if (empty($_SESSION)) {
             header("Location: /?action=login");
@@ -439,29 +437,24 @@ class Controller
         return true;
     }
     
-    final private function action(): string
-    {
-        return $this->request->getParam('action', self::DEFAULT_ACTION);
-    }
-    
-    private function counter(): void
+    function counter(): void
     {
         $counter = $this->database->getCounter((int) $this->request->getParam('id'));
         $counter++;
         $this->database->updateCounter((int) $counter, (int) $this->request->getParam('id'));
     }
     
-    final private function getAppUser(): array
+    private function getAppUser(): array
     {
         return $this->database->getApp((int)$this->request->getParam('id'), (int) $_SESSION['id']);
     }
     
-    final private function getAdUser(): array
+    private function getAdUser(): array
     {
         return $this->database->getAdUser((int)$this->request->getParam('id'), (int) $_SESSION['id']);
     }
     
-    final private function getAd(): array
+    private function getAd(): array
     {
         $adId = (int) $this->request->getParam('id');
         
