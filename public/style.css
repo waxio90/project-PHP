@@ -108,106 +108,878 @@ header .search .fa-search
 	font-size: 1em;
 	color: #000;
 }
-.top
-{
-	width:100%;
-	justify-content: center;
-	align-items: center;
-}
-.top .title
-{
-	width: 900px;
-}
-.top .title h3
+h3
 {
 	font-size: 1.5em;
-	color: #212034;
-	
+	color: #000;
+	text-decoration: none;
+	font-weight: 300;
+	padding-top:10px;
+	padding-left: 80px;
 }
-.page 
+
+login
 {
-	width:100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
+	margin: 0;
+	padding: 0;
+	font-family: sens-serif;
+	background: url();
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+login:before
+{
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: #03a9f4;
+}
+.form
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 350px;
+	min-height: 400px;
 	background: #fff;
+	box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+	padding: 50px;
+	box-sizing: border-box;
 }
-.page .list-box
+.form h2
 {
-	width:900px;
-	margin-left:10px;
-	margin-right:10px;
-	margin-bottom: 20px;
-	justify-content: center;
-	display: flex;
-	background: rgb(0 255 255);
+	color: #777;
+	margin: 0 0 40px;
+	padding: 0;
+}
+.form .input-box
+{
+	position: relative;
+	margin: 20px 0;
+}
+.form .input-box input
+{
+	width: 100%;
+	font-size: 16px;
+	border: none;
+	border-bottom: 2px solid #777;
 	outline: none;
-	border-right: 8px solid #4A4C6D;
-	border-left: 8px solid cadetblue;
-	border-radius: 4px;
+	padding: 10px;
+	padding-left: 25px;
+	box-sizing: border-box;
+	font-weight: bold;
+	color: #777;
 }
-.page .list-box .left
+.form .input-box input:focus,
+.form .input-box input:valid
 {
-	width: 60%;
-	height: 100%;
+	border-bottom: 2px solid #03a9f4;
+}
+.form .input-box .fas
+{
+	position: absolute;
+	top: 8px;
+	left: 0;
+	font-size: 18px;
+	color: #777;
+}
+.form .input-box input[type="submit"]
+{
+	border: none;
+	cursor: pointer;
+	background: #03a9f4;
+	color: #fff;
+	font-weight: bold;
+	transition: 0.5s;
+}
+.form .input-box input[type="submit"]:hover
+{
+	background: #444987;
+}
+.form a
+{
+	text-decoration: none;
+	color: #777;
+	margin-top: 20px;
+	font-weight: bold;
+	display: inline-block;
+	transition: 0.5s;
+}
+.form a:hover
+{
+	color: #444987;
+}
+main
+{
+	position: static;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	align-items: center;
+	align-content: flex-start;
+	min-height: calc(100vh - 74px);
 }
-.page .list-box .left .top
+main .box-info
 {
 	width: 100%;
-	height: 60%;
+	margin-top: 20px;
+	margin-left: 50px;
+	margin-right: 50px;
+	position: static;
 	display: flex;
 	justify-content: center;
-	flex-wrap: wrap;
-	align-items: center;
-	padding-left:20px;
-	padding-right:20px;
-	font-size: 2em;
-	color: #212034;
-	text-transform: uppercase;
-	font-weight: 700;
-	letter-spacing: 1px;
-}
-.page .list-box .left .bottom
-{
-	width: 100%;
-	height: 40%;
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	align-items: center;
 	
 }
-.fas
+main .box-info .info
 {
-	padding-right: 10px;
+	font-size: 24px;
 }
-.page .list-box .right
+main .box-info .box
 {
-	width: 40%;
-	height: 100%;
+	width: 100%;
+	margin-top: 20px;
+	position: static;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+main .box-info .box .top
+{
+	width: 100%;
+	position: static;
+	display: flex;
+	justify-content: center;
+	font-size: 24px;
+	font-weight: 700;
+}
+main .box-info .box .button
+{
+	width: 100%;
+	margin-top: 10px;
+	position: static;
+	display: flex;
+	justify-content: center;
+}
+main .box-info .box .button input
+{
+	width: 150px;
+	height: 40px;
+	margin: 10px;
+	border: none;
+	border-radius: 5px;
+	font-weight: 600;
+	background: #fff;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+main .box-info .box .button input:hover
+{
+	background: #03a9f4;
+	color: #fff;
+	transition: 0.5s;
+}
+main .box-message
+{
+	width: 100%;
+	position:absolute;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-self: flex-start;
+	font-size:22px;
+	font-weight: 600;
+	text-transform: uppercase;
+	z-index: 2;
+}
+main .navi
+{	
+	width: 100%;
+	min-height:120px;
+	margin-top : 50px;
+	position: static;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	z-index: 2;
+}
+main .navi .button 
+{
+	width: 120px;
+	height: 100px;
+	margin-top: 5px;
+	margin-right: 25px;
+	margin-left: 25px;
+	position: flex;
+	border-radius: 10px;
+	background: #fff;
+	cursor: pointer;
+	justify-content: center;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+main .navi .button:hover
+{
+	background: #03a9f4;
+	color: #fff;
+	transition: 0.5s;
+}
+main .navi .button .ico
+{
+	height: 70%;
+	font-size: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+main .navi .button .title
+{
+	
+	display: flex;
+	justify-content: center;
+}
+main .tableBox
+{
+	width: 100%;
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-right: 50px; 
+	position: static;
+	
+}
+main .tableBox .top
+{
+	width: 100%;
+	position: static;
+	display: flex;
+	background: #4A4C6D;
+}
+main .tableBox .top .col
+{
+	
+	display: flex;
+	justify-content: center;
+	color: #fff;
+}
+main .tableBox .box
+{
+	width: 100%;
+	position: static;
+	display: flex;
+	
+}
+main .tableBox .box .col
+{
+	width: 20%;
+	display: flex;
+	justify-content: center;
+	border-bottom: 1px solid #777;
+	flex-wrap: wrap;
+	
+}
+main .tableBox .box .col a 
+{
+	text-decoration: none;
+}
+main .tableBox .box .col a i
+{
+	padding: 5px;
+	
+	display: flex;
+	flex-wrap: wrap;
+	text-decoration: none;
+	color: #777;
+	
+}
+main .container
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-self: flex-start;
+	flex-wrap: wrap;
+	z-index: 1;
+}
+main .container h2
+{
+	margin-top: 10px;
+	font-size: 1.5em;
+	color: #4A4C6D;
+}
+main .container .formAd
+{
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	position: static;
+	display: flex;
+	background: #fff;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+main .container .formAd .formBox
+{	
+	width: 100%;
+	padding: 50px;
+	position: static;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+main .container .formAd .formBox .inputBox
+{
+	margin-right: 10px;
+}
+main .container .formAd .formBox .inputBox.w50
+{
+	width: 47%;
+	
+}
+main .container .formAd .formBox .inputBox.w100
+{
+	width: 100%;
+}
+main .container .formAd .formBox .inputBox input,
+main .container .formAd .formBox .inputBox select,
+main .container .formAd .formBox .inputBox textarea
+{
+	width: 100%;
+	margin: 10px;
+	font-size: 16px;
+	border: 1px solid lightgray;
+	border-bottom: 2px solid #777;
+	border-radius: 5px;
+	outline: none;
+	padding: 10px;
+	padding-left: 25px;
+	box-sizing: border-box;
+	font-weight: 400;
+	color: #777;
+}
+main .container .formAd .formBox .inputBox textarea
+{
+	min-height: 150px;
+}
+main .container .formAd .formBox .inputBox input:focus,
+main .container .formAd .formBox .inputBox select:focus,
+main .container .formAd .formBox .inputBox textarea:focus,
+main .container .formAd .formBox .inputBox input:valid,
+main .container .formAd .formBox .inputBox select:valid,
+main .container .formAd .formBox .inputBox textarea:valid
+{
+	border-bottom: 2px solid #03a9f4;
+}
+main .container .formAd .formBox .inputBox input[type="submit"],
+main .container .formAd .formBox .inputBox input[type="button"]
+{
+	border: none;
+	cursor: pointer;
+	background: #03a9f4;
+	color: #fff;
+	font-weight: bold;
+	transition: 0.5s;
+}
+main .container .formAd .formBox .inputBox input[type="submit"]:hover,
+main .container .formAd .formBox .inputBox input[type="button"]:hover
+{
+	background: #444987;
+}
+main .settingsBox
+{
+	margin-top: 50px;
+	position: static;
+	
+}
+main .settingsBox .pass
+{
+	width: 300px;
+	margin-top: 20px;
+	margin-right: 20px;
+	
+	padding: 20px;
+	position: static;
+	justify-content: center;
+	border: 1px solid #c0c0c0;
+	border-radius: 5px;
+}
+main .settingsBox .pass h2
+{	
+	width: 100%;
+	font-size: 24px;
+	display: flex;
+	justify-content: center;
+	
+}
+main .settingsBox .pass .formBox
+{
+	width: 100%;
+	margin-top: 20px;
+	position: static;
+	display: flex;
+}
+main .settingsBox .pass .formBox .box
+{
+	width: 100%;
+	margin-bottom: 20px;
+	position: static;
+}
+main .settingsBox .pass .formBox .box input
+{
+	width: 100%;
+	font-size: 16px;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+	outline: none;
+	padding: 3px;
+	padding-left: 25px;
+	box-sizing: border-box;
+	font-weight: 400;
+	color: #777;
+}
+main .settingsBox .pass .formBox .box input[type="submit"]
+{	
+	height: 40px;
+	background: #03a9f4;
+	color: #fff;
+}
+main .settingsBox .pass .formBox .box input[type="submit"]:hover
+{
+	background: #444987;
+	transition: 0.5s;
+}
+main .settingsBox .account
+{
+	width: 300px;
+	margin-top: 20px;
+	margin-right: 20px;
+	padding: 20px;
+	position: static;
+	justify-content: center;
+	border: 1px solid #c0c0c0;
+	border-radius: 5px;
+}
+main .settingsBox .account h2
+{	
+	width: 100%;
+	font-size: 24px;
+	display: flex;
+	justify-content: center;
+	
+}
+main .settingsBox .account input
+{
+	width: 100%;
+	height: 40px;
+	margin-top: 20px;
+	align-items: center;
+	border: 1px solid #c0c0c0;
+	border-radius: 5px;
+	background: #03a9f4;
+	color: #fff;
+}
+main .settingsBox .account input:hover
+{
+	background: #444987;
+	transition: 0.5s;
+}
+section
+{
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+	min-height: calc(100vh - 74px);
+}
+section::before
+{
+	content: '';
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: #03a9f4;
+}
+section .box-message
+{
+	width: 100%;
+	position:relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-self: flex-start;
+	font-size:22px;
+	font-weight: 600;
+	text-transform: uppercase;
+	z-index: 2;
+}
+section .container
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-self: flex-start;
+	flex-wrap: wrap;
+	z-index: 1;
+}
+section .container h2
+{
+	margin-top: 10px;
 	font-size: 1.5em;
-	color: #212034;
+	color: #4A4C6D;
+}
+section .container .formAd
+{
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	position: static;
+	display: flex;
+	background: #fff;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+section .container .formAd .formBox
+{	
+	width: 100%;
+	padding: 50px;
+	position: static;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+section .container .formAd .formBox .inputBox
+{
+	margin-right: 10px;
+}
+section .container .formAd .formBox .inputBox.w50
+{
+	width: 47%;
+	
+}
+section .container .formAd .formBox .inputBox.w100
+{
+	width: 100%;
+}
+section .container .formAd .formBox .inputBox input,
+section .container .formAd .formBox .inputBox select,
+section .container .formAd .formBox .inputBox textarea
+{
+	width: 100%;
+	margin: 10px;
+	font-size: 16px;
+	border: 1px solid lightgray;
+	border-bottom: 2px solid #777;
+	border-radius: 5px;
+	outline: none;
+	padding: 10px;
+	padding-left: 25px;
+	box-sizing: border-box;
+	font-weight: 400;
+	color: #777;
+}
+section .container .formAd .formBox .inputBox textarea
+{
+	min-height: 150px;
+}
+section .container .formAd .formBox .inputBox input:focus,
+section .container .formAd .formBox .inputBox select:focus,
+section .container .formAd .formBox .inputBox textarea:focus,
+section .container .formAd .formBox .inputBox input:valid,
+section .container .formAd .formBox .inputBox select:valid,
+section .container .formAd .formBox .inputBox textarea:valid
+{
+	border-bottom: 2px solid #03a9f4;
+}
+section .container .formAd .formBox .inputBox input[type="submit"]
+{
+	border: none;
+	cursor: pointer;
+	background: #03a9f4;
+	color: #fff;
+	font-weight: bold;
+	transition: 0.5s;
+}
+section .container .formAd .formBox .inputBox input[type="submit"]:hover
+{
+	background: #444987;
 }
 
+section .container .listBox
+{
+	width: 100%;
+	margin-top: 10px;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	position: static;
+	display: flex;
+	flex-wrap: wrap;
+	background: #fff;
+	justify-content: space-between;
+	outline: none;
+	border: none;
+	border-left: 10px solid #4A4C6D;
+	border-right: 10px solid #03a9f4;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	cursor: pointer;
+}
+section .container .listBox .position
+{
+	width: 300px;
+	position: static;
+	display: flex;
+}
+section .container .listBox .position h2
+{
+	font-size: 1.5em;
+	font-weight: 600;
+}
+section .container .listBox .info
+{
+	
+	margin-top:5px;
+	position: static;
+	display: flex;
+	align-items: center;
+}
+section .container .listBox .info ul
+{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	
+}
+section .container .listBox .info ul li
+{
+	list-style: none;
+	margin: 5px;
+	padding-left:10px;
+	padding-right:10px;
+	background: #03a9f4;
+	border-radius: 8px;
+	font-size: 0.9em;
+	font-weight: 300;
+	color: #fff
+}
+section .container .listBox .company
+{
+	width: 150px;
+	margin-top:5px;
+	position: static;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+section .container .listBox .company ul
+{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	
+}
+section .container .listBox .company ul li
+{
+	list-style: none;
+	margin: 5px;
+	padding-left:10px;
+	padding-right:10px;
+	font-size: 0.9em;
+	font-weight: 300;
+	color: #777
+}
+section .container .box
+{
+	width: 100%;
+	height: auto;
+	margin: 20px;
+	position: relative;
+	display: flex;
+	background: #fff;
+	box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+	justify-content: center;
+}
+section .container .box .topBox
+{
+	width: 100%;
+	position: absolute;
+	
+	background: #03a9f4;
+}
+section .container .box .topBox h2
+{
+	padding-top: 20px;
+	padding-left: 50px;
+	font-size: 2em;
+	font-weight: 600;
+	color: #fff;
+}
+section .container .box .topBox .info1
+{
+	position: relative;
+	padding-left: 70px;
+	padding-bottom: 20px;
+	margin: 0;
+	display: flex;
+}
+section .container .box .topBox .info1 li
+{
+	position: relative;
+	list-style: none;
+	display: flex;
+	margin-right: 10px;
+	align-items: flex-start;
+	
+}
+section .container .box .topBox .info1 li span
+{
+	position: relative;
+	display: flex;
+	margin-left:0;
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	opacity: 0.8;
+}
+section .container .box .topBox .info1 li span i
+{
+	padding-top: 3px;
+	padding-left: 10px;
+	margin-right: 10px;
+}
+section .container .box .textBox
+{
+	width: 100%;
+	position: relative;
+	flex-wrap: wrap;
+	padding-top: 100px;
+	padding-left: 80px;
+	padding-right: 80px;
+}
+section .box .textBox h2
+{
+	margin-top: 20px;
+	font-size: 1.3em;
+	color: #000;
+}
+section .box .textBox .text
+{
+	font-size: 1em;
+	text-align: justify;
+	margin-bottom: 20px;
+}
+section .container .box .textBox .button
+{	
+	width: 200px;
+	height: 50px;
+	display: flex;
+	margin-bottom: 20px;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	background: #03a9f4;
+	color: #fff;
+}
 
-
-
-
-
-@media (max-width: 991px)
+@media (max-width: 800px)
 {
 	header
 	{
+		padding: 10px 20px;
+		flex-direction: column;
+	}
+	login
+	{
+		width:100%;
+		box-shadow: none;
+	}
+	login:before
+	{
+		display: none;
+	}
+	main .tableBox
+	{
+		margin-top: 220px;
+		font-size: 10px;
+	}
+	section
+	{
+		position: relative;
+		display: flex;
+		align-items: center;
+		min-height: calc(100vh - 74px);
+	}
+	section::before
+	{
+		display: none;
+	}
+	.box-message
+	{
+		top: 10px;
+	}
+	
+	section .container
+	{
+		position: relative;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		z-index: 1;
+	}
+	section .container .appform
+	{
+		width: 100%;
+		top: 0;
+		position: relative;
+		padding-left: 15px;
+		background: #fff;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		box-shadow: none;
+	}
+	section .container .appform .formBox
+	{
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		padding-top: 30px;
+	}
+	section .container .appform .formBox .inputBox.w50
+	{
+		width: 100%;
+	}
+	section .container .companyinfo
+	{
+		display: none;
+	}
+	h3
+	{
+		text-align: center;
+		padding: 10px 0;
+	}
+	.page-list-ad
+	{
+		padding: 0 10px;
+		flex-direction: column;
+	}
+	.box-ad
+	{
+		text-align: center;
 		padding: 10px 20px;
 		flex-direction: column;
 	}
@@ -216,7 +988,3 @@ header .search .fa-search
 		margin: 5px;
 	}
 }
-
-
-
-
