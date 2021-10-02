@@ -78,7 +78,7 @@
     			</div>
     			<?php endif;?>
     			<div class="button" onclick="window.location='/?action=apply&id=<?php echo $ad['id']?>'">Aplikuj</div>
-    			<div class="button">
+				<div class="text">
 					<?php if ($day <= 1) : ?>
 						<?php echo "oferta dodana dziś" ?>	
 					<?php else :?>
