@@ -8,22 +8,20 @@ spl_autoload_register(function (string $classNamespace) {
     require_once($path);
 });
 
+require_once("src/Utils/debug.php");
+$configuration = require_once("config/config.php");
+
+use App\Controller\AbstractController;
 use App\Controller\Controller;
 use App\Request;
 use App\Exception\AppException;
 use App\Exception\ConfigurationException;
 
-require_once("src/Utils/debug.php");
-
-
-$configuration = require_once("config/config.php");
 $request = new Request($_GET, $_POST);
 
-
 try {
-  Controller::initConfiguration($configuration);
+  AbstractController::initConfiguration($configuration);
   (new Controller($request))->run();
-    
 } catch (ConfigurationException $e) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';
     echo 'Problem z konfiguracją';
