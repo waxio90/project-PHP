@@ -9,7 +9,7 @@ class AccountController extends AbstractController
     public function listUserAdAction(): void
     {
         if ($this->isSession()) {
-           $listAd = $this->database->listUserAd($_SESSION['id']);
+           $listAd = $this->adModel->listUserAd((int) $_SESSION['id']);
         }
         
         $this->view->render('listUserAd', [
@@ -22,7 +22,7 @@ class AccountController extends AbstractController
     public function listUserAppAction(): void
     {
         if ($this->isSession()) {
-            $listApp = $this->database->listUserApp($_SESSION['id']);
+            $listApp = $this->adModel->listUserApp((int) $_SESSION['id']);
         }
         
         $this->view->render('listUserApp', [
@@ -83,7 +83,7 @@ class AccountController extends AbstractController
                         $this->redirect('/?action=edit', ['error' => 'locationCompany']);
                     }
                     
-                    $this->database->editAd($adData, (int) $idAd, (int) $_SESSION['id']);
+                    $this->adModel->editAd($adData, (int) $idAd, (int) $_SESSION['id']);
                     $this->redirect('/?action=listUserAd', ['before' => 'update']);
             }
         }
@@ -96,7 +96,7 @@ class AccountController extends AbstractController
         if ($this->isSession()) {
             if ($this->request->hasPost()) {
                 $id = $this->request->postParam('id');
-                $this->database->deleteAd((int) $id, (int) $_SESSION['id']);
+                $this->adModel->deleteAd((int) $id, (int) $_SESSION['id']);
                 $this->redirect('/?action=listUserAd', ['before' => 'delete']);
             }
         }
@@ -108,7 +108,7 @@ class AccountController extends AbstractController
     {
         if ($this->isSession()) {
             if ($this->request->hasPost()) {
-                $this->database->deleteApp((int) $this->request->postParam('id'));
+                $this->adModel->deleteApp((int) $this->request->postParam('id'));
                 $this->redirect('/?action=listUserApp', ['before' => 'delete']);
             } 
         }
@@ -151,11 +151,11 @@ class AccountController extends AbstractController
                 $this->redirect('/?action=register', ['error' => 'emptyData']);
             }
             
-            if (!empty($this->database->validateLogin($registerData['login']))) {
+            if (!empty($this->adModel->validateLogin($registerData['login']))) {
                 $this->redirect('/?action=register', ['error' => 'nameLogin']);
             }
             
-            if (!empty($this->database->validateEmail($registerData['email']))) {
+            if (!empty($this->adModel->validateEmail($registerData['email']))) {
                 $this->redirect('/?action=register', ['error' => 'nameEmail']);
             }
             
@@ -167,7 +167,7 @@ class AccountController extends AbstractController
                 $this->redirect('/?action=register', ['error' => 'confirmPassword']);
             }
             
-            $this->database->register($registerData);
+            $this->adModel->register($registerData);
             $this->redirect('/?action=login', ['before' => 'register']);
   
         }
@@ -199,11 +199,11 @@ class AccountController extends AbstractController
                 $this->redirect('/?action=login', ['error' => 'emptyData']);
             }
             
-            if (empty($this->database->validateLogin($loginData['login']))) {
+            if (empty($this->adModel->validateLogin($loginData['login']))) {
                 $this->redirect('/?action=login', ['error' => 'errorLogin']);
             }
                 
-            $userData = $this->database->login($loginData);
+            $userData = $this->adModel->login($loginData);
             if (!password_verify($loginData['password'], $userData['password'])) {
                 $this->redirect('/?action=login', ['error' => 'wrongPassword']);
             }
@@ -243,7 +243,7 @@ class AccountController extends AbstractController
                 $this->redirect('/?action=settingsUser', ['error' => 'emptyData']);
             }
             
-            $oldPassword = $this->database->checkPassword((int) $_SESSION['id']);
+            $oldPassword = $this->adModel->checkPassword((int) $_SESSION['id']);
             if (!password_verify($passData['oldPassword'], $oldPassword['password'])) {
                 $this->redirect('/?action=settingsUser', ['error' => 'wrongPassword']);
             }
@@ -256,7 +256,7 @@ class AccountController extends AbstractController
                 $this->redirect('/?action=settingsUser', ['error' => 'confirmPassword']);
             }
             
-            $this->database->changePassword($passData, (int) $_SESSION['id']);
+            $this->adModel->changePassword($passData, (int) $_SESSION['id']);
             $this->redirect('/?action=settingsUser', ['before' => 'changePassword']);
         }
     }
@@ -264,8 +264,8 @@ class AccountController extends AbstractController
     private function deleteUser(): void
     {
         if ($this->request->hasPost()) {
-            $this->database->deleteUser((int) $_SESSION['id']);
-            $this->database->deleteAdsUser((int) $_SESSION['id']);
+            $this->adModel->deleteUser((int) $_SESSION['id']);
+            $this->adModel->deleteAdsUser((int) $_SESSION['id']);
             session_destroy();
             $this->redirect('/?action=login', ['before' => 'deleteUser']);
         }
@@ -273,12 +273,12 @@ class AccountController extends AbstractController
 
     private function getAppUser(): array
     {
-        return $this->database->getApp((int)$this->request->getParam('id'), (int) $_SESSION['id']);
+        return $this->adModel->getApp((int)$this->request->getParam('id'), (int) $_SESSION['id']);
     }
     
     private function getAdUser(): array
     {
-        return $this->database->getAdUser((int)$this->request->getParam('id'), (int) $_SESSION['id']);
+        return $this->adModel->getAdUser((int)$this->request->getParam('id'), (int) $_SESSION['id']);
     }
 
     private function createAd()
@@ -310,7 +310,7 @@ class AccountController extends AbstractController
                 }
                 
 
-                $this->database->createAd($adData, $_SESSION['id']);
+                $this->adModel->createAd($adData, (int) $_SESSION['id']);
                 $this->redirect('/?', ['before' => 'created']);
         }
     }

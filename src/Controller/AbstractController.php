@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\View;
-use App\Database;
 use App\Request;
 use App\Exception\ConfigurationException;
+use App\Model\AdModel;
 
 require_once("src/Utils/debug.php");
 
@@ -23,18 +23,17 @@ abstract class AbstractController
     
     protected View $view;
     protected Request $request;
-    protected Database $database;
+    protected AdModel $adModel;
     
     public function __construct(Request $request)
     {
         if (empty(self::$configuration['db'])) {
-            throw new ConfigurationException('Configuration error');
+            throw new ConfigurationException('Missing DB conncection configuration');
         }
 
-        $this->database = new Database(self::$configuration['db']);
+        $this->adModel = new AdModel(self::$configuration['db']);
         $this->request = $request;
         $this->view = new View();  
-
     }
 
     public static function initConfiguration(array $configuration): void

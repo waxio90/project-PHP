@@ -8,7 +8,7 @@ class Controller extends AccountController
 {
     public function applyAction(): void
     {
-        if ($this->request->hasPost()) {         
+        if ($this->request->hasPost()) {
             $applyData = [
                 'idOffer' => $this->request->postParam('idOffer'),
                 'idUser' => $this->request->postParam('idUser'),
@@ -45,7 +45,7 @@ class Controller extends AccountController
             $nameTmp = $_FILES['fileCV']['tmp_name'];
             $nameFile =  date("Y-m-d").$_FILES['fileCV']['size'].$_FILES['fileCV']['name'];
             move_uploaded_file($nameTmp, "uploads/$nameFile");
-            $this->database->applyAd($applyData, $nameFile);
+            $this->adModel->applyAd($applyData, $nameFile);
             $this->redirect('/?action=show&id='.$applyData['idOffer'], ['before' => 'apply']);
         }
         
@@ -69,9 +69,9 @@ class Controller extends AccountController
         $phrase = $this->request->getParam('phrase');
         
         if ($phrase) {
-            $adOffersList = $this->database->search($phrase);
+            $adOffersList = $this->adModel->search($phrase);
         } else {
-            $adOffersList = $this->database->getAdOffers();
+            $adOffersList = $this->adModel->getAdOffers();
         }
         $this->view->render('list', 
             [
@@ -82,16 +82,15 @@ class Controller extends AccountController
 
     private function counter(): void
     {
-        $counter = $this->database->getCounter((int) $this->request->getParam('id'));
+        $counter = $this->adModel->getCounter((int) $this->request->getParam('id'));
         $counter++;
-        $this->database->updateCounter((int) $counter, (int) $this->request->getParam('id'));
+        $this->adModel->updateCounter((int) $counter, (int) $this->request->getParam('id'));
     }
     
     private function getAd(): array
     {
         $adId = (int) $this->request->getParam('id');
-        
-        return $this->database->getAd($adId);
+        return $this->adModel->getAd($adId);
     }
-    
+
 }
