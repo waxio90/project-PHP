@@ -35,7 +35,33 @@ class AccountController extends AbstractController
     public function settingsUserAction(): void
     {
         if ($this->isSession()) {
-            $this->changePassword();
+            if ($this->request->hasPost()) {
+                $passData = [
+                    'oldPassword' => $this->request->postParam('oldPassword'),
+                    'newPassword' => $this->request->postParam('newPassword'),
+                    'confirmNewPassword' => $this->request->postParam('confirmNewPassword')
+                ];
+                
+                if (empty($passData['oldPassword']) || empty($passData['newPassword']) || empty($passData['confirmNewPassword'])) {
+                    $this->redirect('/?action=settingsUser', ['error' => 'emptyData']);
+                }
+                
+                $oldPassword = $this->adModel->checkPassword((int) $_SESSION['id']);
+                if (!password_verify($passData['oldPassword'], $oldPassword['password'])) {
+                    $this->redirect('/?action=settingsUser', ['error' => 'wrongPassword']);
+                }
+                
+                if ($passData['newPassword'] === $passData['oldPassword']) {
+                    $this->redirect('/?action=settingsUser', ['error' => 'checkPassword']);
+                }
+                
+                if ($passData['newPassword'] !== $passData['confirmNewPassword']) {
+                    $this->redirect('/?action=settingsUser', ['error' => 'confirmPassword']);
+                }
+                
+                $this->adModel->changePassword($passData, (int) $_SESSION['id']);
+                $this->redirect('/?action=settingsUser', ['before' => 'changePassword']);
+            }
         }
         
         $this->view->render('settingsUser',[
@@ -47,7 +73,12 @@ class AccountController extends AbstractController
     public function deleteUserAction(): void
     {
         if ($this->isSession()) {
-            $this->deleteUser(); 
+            if ($this->request->hasPost()) {
+                $this->adModel->deleteUser((int) $_SESSION['id']);
+                $this->adModel->deleteAdsUser((int) $_SESSION['id']);
+                session_destroy();
+                $this->redirect('/?action=login', ['before' => 'deleteUser']);
+            }
         }
         
         $this->view->render('deleteUser');
@@ -123,7 +154,30 @@ class AccountController extends AbstractController
             exit;
         }
         
-        $this->singIn();
+        if ($this->request->hasPost()) {
+            $loginData = [
+                'login' => $this->request->postParam('login'),
+                'password' => $this->request->postParam('password')
+            ];
+            
+            if (empty($loginData['login']) && empty($loginData['password'])) {
+                $this->redirect('/?action=login', ['error' => 'emptyData']);
+            }
+            
+            if (empty($this->adModel->validateLogin($loginData['login']))) {
+                $this->redirect('/?action=login', ['error' => 'errorLogin']);
+            }
+                
+            $userData = $this->adModel->login($loginData);
+            if (!password_verify($loginData['password'], $userData['password'])) {
+                $this->redirect('/?action=login', ['error' => 'wrongPassword']);
+            }
+
+            $_SESSION["loggedin"] = true;
+            $_SESSION["id"] = $userData['id'];
+            $_SESSION["username"] = $userData['login'];
+            header("location: /?action=listUserAd");
+        }
         
         $this->view->render('login', 
             [
@@ -134,7 +188,8 @@ class AccountController extends AbstractController
     
     public function logoutAction(): void
     {
-        $this->stopSession();
+        session_destroy();
+        header("location: /");
     }
     
     public function registerAction(): void
@@ -180,109 +235,6 @@ class AccountController extends AbstractController
             $this->redirect('/?action=login', ['error' => 'loggedin']);
         }
 
-        $this->createAd();
-        $this->view->render('create', [
-            'error' => $this->request->getParam('error')
-            
-        ]);
-    }
-
-    private function singIn(): void
-    {
-        if ($this->request->hasPost()) {
-            $loginData = [
-                'login' => $this->request->postParam('login'),
-                'password' => $this->request->postParam('password')
-            ];
-            
-            if (empty($loginData['login']) && empty($loginData['password'])) {
-                $this->redirect('/?action=login', ['error' => 'emptyData']);
-            }
-            
-            if (empty($this->adModel->validateLogin($loginData['login']))) {
-                $this->redirect('/?action=login', ['error' => 'errorLogin']);
-            }
-                
-            $userData = $this->adModel->login($loginData);
-            if (!password_verify($loginData['password'], $userData['password'])) {
-                $this->redirect('/?action=login', ['error' => 'wrongPassword']);
-            }
-
-            $_SESSION["loggedin"] = true;
-            $_SESSION["id"] = $userData['id'];
-            $_SESSION["username"] = $userData['login'];
-            header("location: /?action=listUserAd");
-        }
-    }
-
-    private function stopSession(): void
-    {
-        session_destroy();
-        header("location: /");
-        exit;
-    }
-
-    private function isSession(): bool
-    {
-        if (empty($_SESSION)) {
-            header("Location: /?action=login");
-        }
-        return true;
-    }
-
-    private function changePassword(): void
-    {
-        if ($this->request->hasPost()) {
-            $passData = [
-                'oldPassword' => $this->request->postParam('oldPassword'),
-                'newPassword' => $this->request->postParam('newPassword'),
-                'confirmNewPassword' => $this->request->postParam('confirmNewPassword')
-            ];
-            
-            if (empty($passData['oldPassword']) || empty($passData['newPassword']) || empty($passData['confirmNewPassword'])) {
-                $this->redirect('/?action=settingsUser', ['error' => 'emptyData']);
-            }
-            
-            $oldPassword = $this->adModel->checkPassword((int) $_SESSION['id']);
-            if (!password_verify($passData['oldPassword'], $oldPassword['password'])) {
-                $this->redirect('/?action=settingsUser', ['error' => 'wrongPassword']);
-            }
-            
-            if ($passData['newPassword'] === $passData['oldPassword']) {
-                $this->redirect('/?action=settingsUser', ['error' => 'checkPassword']);
-            }
-            
-            if ($passData['newPassword'] !== $passData['confirmNewPassword']) {
-                $this->redirect('/?action=settingsUser', ['error' => 'confirmPassword']);
-            }
-            
-            $this->adModel->changePassword($passData, (int) $_SESSION['id']);
-            $this->redirect('/?action=settingsUser', ['before' => 'changePassword']);
-        }
-    }
-
-    private function deleteUser(): void
-    {
-        if ($this->request->hasPost()) {
-            $this->adModel->deleteUser((int) $_SESSION['id']);
-            $this->adModel->deleteAdsUser((int) $_SESSION['id']);
-            session_destroy();
-            $this->redirect('/?action=login', ['before' => 'deleteUser']);
-        }
-    }
-
-    private function getAppUser(): array
-    {
-        return $this->adModel->getApp((int)$this->request->getParam('id'), (int) $_SESSION['id']);
-    }
-    
-    private function getAdUser(): array
-    {
-        return $this->adModel->getAdUser((int)$this->request->getParam('id'), (int) $_SESSION['id']);
-    }
-
-    private function createAd()
-    {
         if ($this->request->hasPost()) {
             $adData = [
                 'company' => $this->request->postParam('company'),
@@ -309,9 +261,31 @@ class AccountController extends AbstractController
                     $this->redirect('/?action=create', ['error' => 'locationCompany']);
                 }
                 
-
                 $this->adModel->createAd($adData, (int) $_SESSION['id']);
                 $this->redirect('/?', ['before' => 'created']);
         }
+
+        $this->view->render('create', [
+            'error' => $this->request->getParam('error')
+            
+        ]);
+    }
+
+    private function isSession(): bool
+    {
+        if (empty($_SESSION)) {
+            header("Location: /?action=login");
+        }
+        return true;
+    }
+
+    private function getAppUser(): array
+    {
+        return $this->adModel->getApp((int)$this->request->getParam('id'), (int) $_SESSION['id']);
+    }
+    
+    private function getAdUser(): array
+    {
+        return $this->adModel->getAdUser((int)$this->request->getParam('id'), (int) $_SESSION['id']);
     }
 }
